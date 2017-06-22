@@ -25,6 +25,15 @@ public class HdfsHelper {
     public static String hdfsFS = "hdfs://10.50.23.210:8020";
     public static String hdfsConf = "http://10.50.23.208:8080/hadoop-config/hdfs-site.xml";
     public static String coreConf = "http://10.50.23.208:8080/hadoop-config/core-site.xml";
+    public static String implconf = "org.apache.hadoop.hdfs.DistributedFileSystem";
+
+    public static Configuration conf = new Configuration();
+    static {
+        Configuration conf = new Configuration();
+        conf.addResource(hdfsConf);
+        conf.addResource(coreConf);
+        conf.set("fs.hdfs.impl",implconf);
+    }
 
 //    public static String hdfsFS = "hdfs://10.12.21.131:8020";
 //    public static String hdfsConf = "http://10.12.21.131:8080/hadoop-config/hdfs-site.xml";
@@ -33,10 +42,6 @@ public class HdfsHelper {
     public static boolean mkdir(String path) throws IOException {
 
         Path srcpath = new Path(path);
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
 
         boolean stats = fileSystem.mkdirs(srcpath);
@@ -46,10 +51,6 @@ public class HdfsHelper {
 
     public static void delete(String path) throws IOException {
         Path srcpath = new Path(path);
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
         boolean stats = fileSystem.deleteOnExit(srcpath);
         if (stats) {
@@ -63,10 +64,6 @@ public class HdfsHelper {
 
     public static List<String> reader(Path filePath) throws IOException {
 
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
         FSDataInputStream hdfsInStream = fileSystem.open(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(hdfsInStream));
@@ -86,10 +83,6 @@ public class HdfsHelper {
     public static List<String> reader(String srcPath, String encoding) throws IOException {
 
         Path filePath = new Path(srcPath);
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
         FSDataInputStream hdfsInStream = fileSystem.open(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(hdfsInStream, encoding));
@@ -110,10 +103,6 @@ public class HdfsHelper {
     public static void writer(String srcPath, List<String> contents) throws IOException {
 
         Path filePath = new Path(srcPath);
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
         FSDataOutputStream outputStream = fileSystem.create(filePath);
         for (String item : contents) {
@@ -128,10 +117,6 @@ public class HdfsHelper {
     public static void move(String srcPath, String tarDir) throws IOException {
 
         String tarpath = tarDir + new Path(srcPath).getName();
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
         boolean status = fileSystem.rename(new Path(srcPath),new Path(tarpath));
         if(status){
@@ -146,10 +131,6 @@ public class HdfsHelper {
     public static FileStatus[] list(String path) throws Exception {
 
         Path srcpath = new Path(path);
-        Configuration conf = new Configuration();
-        conf.addResource(hdfsConf);
-        conf.addResource(coreConf);
-        conf.set("fs.hdfs.impl","org.apache.hadoop.hdfs.DistributedFileSystem");
         FileSystem fileSystem = FileSystem.get(URI.create(hdfsFS), conf);
         FileStatus[] stats = fileSystem.listStatus(srcpath);
         fileSystem.close();
