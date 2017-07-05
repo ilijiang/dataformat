@@ -21,10 +21,12 @@ import java.util.List;
  */
 public class HdfsHelper {
 
-
+    /*online hdfs*/
     public static String hdfsFS = "hdfs://10.50.23.210:8020";
-    public static String hdfsConf = "http://10.50.23.208:8080/hadoop-config/hdfs-site.xml";
-    public static String coreConf = "http://10.50.23.208:8080/hadoop-config/core-site.xml";
+    /*test hdfs*/
+//    public static String hdfsFS = "hdfs://10.12.21.131/:8020";
+    public static String hdfsConf = "resources/hdfs-site.xml";
+    public static String coreConf = "resources/core-site.xml";
     public static String implconf = "org.apache.hadoop.hdfs.DistributedFileSystem";
 
     public static Configuration conf = new Configuration();
@@ -35,9 +37,6 @@ public class HdfsHelper {
         conf.set("fs.hdfs.impl",implconf);
     }
 
-//    public static String hdfsFS = "hdfs://10.12.21.131:8020";
-//    public static String hdfsConf = "http://10.12.21.131:8080/hadoop-config/hdfs-site.xml";
-//    public static String coreConf = "http://10.12.21.131:8080/hadoop-config/core-site.xml";
 
     public static boolean mkdir(String path) throws IOException {
 
